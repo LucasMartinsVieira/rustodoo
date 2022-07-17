@@ -47,15 +47,9 @@ impl Todo {
             if task.len() > 5 {
                 let number = (number + 1).to_string();
 
-                let symbol = &task[..4];
+                let task = &task[..];
 
-                let task = &task[4..];
-
-                if symbol == "[x] " {
-                    println!("{} {} \t[x]", number, task);
-                } else if symbol == "[ ] " {
-                    println!("{} {} \t[ ]", number, task);
-                }
+                println!("{} {}", number, task);
             }
         }
     }
@@ -77,7 +71,7 @@ impl Todo {
                 continue;
             }
 
-            let line = format!("[ ] {}\n", arg);
+            let line = format!("{}\n", arg);
             buffer
                 .write_all(line.as_bytes())
                 .expect("unable to write data");
@@ -98,9 +92,6 @@ impl Todo {
         let mut buffer = BufWriter::new(todofile);
 
         for (pos, line) in self.todo.iter().enumerate() {
-            if args.contains(&"done".to_string()) && &line[..4] == "[x] " {
-                continue;
-            }
             if args.contains(&(pos + 1).to_string()) {
                 continue;
             }
@@ -113,41 +104,6 @@ impl Todo {
         }
     }
 
-    pub fn done(&self, args: &[String]) {
-        if args.is_empty() {
-            eprintln!("rustodoo done takes at least 1 argument");
-            process::exit(1);
-        }
-
-        let todofile = OpenOptions::new()
-            .write(true)
-            .open(&self.todo_path)
-            .expect("Couldn't open the todofile");
-        let mut buffer = BufWriter::new(todofile);
-
-        for (pos, line) in self.todo.iter().enumerate() {
-            if line.len() > 5 {
-                if args.contains(&(pos + 1).to_string()) {
-                    if &line[..4] == "[ ] " {
-                        let line = format!("[x] {}\n", &line[4..]);
-                        buffer
-                            .write_all(line.as_bytes())
-                            .expect("unable to write data");
-                    } else if &line[..4] == "[x] " {
-                        let line = format!("[ ] {}\n", &line[4..]);
-                        buffer
-                            .write_all(line.as_bytes())
-                            .expect("unable to write data");
-                    }
-                } else if &line[..4] == "[ ] " || &line[..4] == "[x] " {
-                    let line = format!("{}\n", line);
-                    buffer
-                        .write_all(line.as_bytes())
-                        .expect("unable to write data");
-                }
-            }
-        }
-    }
     pub fn reset(self) {
         let todofile = OpenOptions::new()
             .write(true)
@@ -161,5 +117,13 @@ impl Todo {
         buffer
             .write("".as_bytes())
             .expect("unable to reset the todo list");
+    }
+    pub fn help(self) {
+        println!("rustodoo [options]");
+        println!("\tadd   → add a task!.");
+        println!("\trm    → remove a task!.");
+        println!("\tlist  → list all task!");
+        println!("\tdone  → done a task!.");
+        println!("\treset → reset all the tasks!.")
     }
 }
