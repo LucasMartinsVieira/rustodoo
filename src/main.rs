@@ -54,7 +54,21 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
             }
         },
         SubCommand::Remove(_args) => todo!(),
-        SubCommand::Reset => todo!(),
+        SubCommand::Reset => match todo_service.reset_todos().await {
+            Ok(todos_deleted) => {
+                if todos_deleted == 0 {
+                    println!("No todos were found!");
+                    process::exit(0);
+                }
+
+                println!("Successfully reset todos! {} todos deleted.", todos_deleted);
+            }
+
+            Err(e) => {
+                eprintln!("Error reseting todos: {}", e);
+                process::exit(1);
+            }
+        },
     };
 
     Ok(())

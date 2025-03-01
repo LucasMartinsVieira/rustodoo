@@ -32,4 +32,11 @@ impl<'a> TodoService<'a> {
             .await
             .map_err(|e| format!("Failed to fetch todos: {}", e))
     }
+
+    pub async fn reset_todos(&self) -> Result<u64, String> {
+        self.repository
+            .reset_todos()
+            .await
+            .map_err(|e| format!("Failed to reset todos: {}", e))
+    }
 }
