@@ -20,6 +20,7 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
         }
         SubCommand::List => todo!(),
         SubCommand::Remove(args) => todo!(),
+        SubCommand::Reset => todo!(),
     }
     Ok(())
 }

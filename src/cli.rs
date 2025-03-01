@@ -22,6 +22,9 @@ pub enum SubCommand {
     /// Remove a todo
     #[command(alias = "r")]
     Remove(RemoveArgs),
+    /// Reset database of todos
+    #[command()]
+    Reset,
 }
 
 #[derive(Parser, Debug)]

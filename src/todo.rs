@@ -42,7 +42,8 @@ impl Todo {
         println!("{:?}", todo.status.unwrap_or(StatusType::Pending));
         println!(
             "{:?}",
-            todo.due_date.unwrap_or(NaiveDate::from_ymd(2022, 01, 10))
+            todo.due_date
+                .unwrap_or(NaiveDate::from_ymd_opt(2015, 10, 01).unwrap())
         );
     }
 
