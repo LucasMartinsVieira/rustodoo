@@ -1,15 +1,17 @@
-use std::env;
+use std::{env, process};
 
 use clap::Parser;
 use cli::{Cli, SubCommand};
 use repository::SqliteTodoRepository;
 use service::TodoService;
 use sqlx::sqlite::SqlitePoolOptions;
+use utils::display_table;
 
 mod cli;
 mod model;
 mod repository;
 mod service;
+mod utils;
 
 #[tokio::main(flavor = "current_thread")]
 async fn main() -> Result<(), Box<dyn std::error::Error>> {
@@ -36,10 +38,24 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
                 }
                 Err(e) => {
                     eprintln!("Error adding todo: {}", e);
+                    process::exit(1);
                 }
             }
         }
-        SubCommand::List => todo!(),
+        SubCommand::List => match todo_service.list_todos().await {
+            Ok(todos) => {
+                if todos.is_empty() {
+                    println!("No todos found.");
+                    process::exit(1);
+                }
+
+                display_table(&todos);
+            }
+            Err(e) => {
+                eprintln!("Error retrieving todos: {}", e);
+                process::exit(1);
+            }
+        },
         SubCommand::Remove(_args) => todo!(),
         SubCommand::Reset => todo!(),
     };

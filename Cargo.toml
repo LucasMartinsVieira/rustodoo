@@ -9,6 +9,7 @@ edition = "2021"
 async-trait = "0.1.86"
 chrono = { version = "0.4.40", features = ["serde"] }
 clap = { version = "4.5.31", features = ["derive"] }
+prettytable-rs = "0.10.0"
 serde = { version = "1.0.218", features = ["derive"] }
 sqlx = { version = "0.8.3", features = [
   "sqlite",

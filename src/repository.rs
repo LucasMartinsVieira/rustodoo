@@ -12,6 +12,8 @@ pub trait TodoRepository {
         status: Option<StatusType>,
         due_date: Option<NaiveDate>,
     ) -> sqlx::Result<Todo>;
+
+    async fn list_todos(&self) -> sqlx::Result<Vec<Todo>>;
 }
 
 pub struct SqliteTodoRepository {
@@ -52,5 +54,26 @@ impl TodoRepository for SqliteTodoRepository {
         };
 
         Ok(todo)
+    }
+
+    async fn list_todos(&self) -> sqlx::Result<Vec<Todo>> {
+        let rows = query!("SELECT id, description, status, due_date FROM todos")
+            .fetch_all(&self.pool)
+            .await?;
+
+        let todos = rows
+            .into_iter()
+            .map(|row| Todo {
+                id: row.id,
+                description: row.description,
+                status: row
+                    .status
+                    .map(StatusType::from_db_value)
+                    .unwrap_or_else(|| Some(StatusType::Pending)),
+                due_date: naive_date_from_db(row.due_date),
+            })
+            .collect();
+
+        Ok(todos)
     }
 }

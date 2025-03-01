@@ -1,4 +1,4 @@
-use std::str::FromStr;
+use std::{fmt::Display, str::FromStr};
 
 use chrono::NaiveDate;
 use serde::{Deserialize, Serialize};
@@ -11,11 +11,36 @@ pub struct Todo {
     pub due_date: Option<NaiveDate>,
 }
 
+impl Display for Todo {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        write!(
+            f,
+            "Todo {{ id: {}, description: \"{}\", status: {}, due_date: {} }}",
+            self.id,
+            self.description,
+            self.status
+                .map_or_else(|| "None".to_string(), |s| s.to_string()),
+            self.due_date
+                .map_or_else(|| "None".to_string(), |d| d.to_string())
+        )
+    }
+}
+
 #[derive(Debug, Clone, Copy, Serialize, Deserialize)]
 pub enum StatusType {
     Pending = 0,
     InProgress = 1,
     Done = 2,
+}
+
+impl Display for StatusType {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        match self {
+            StatusType::Pending => write!(f, "pending"),
+            StatusType::InProgress => write!(f, "in progress"),
+            StatusType::Done => write!(f, "done"),
+        }
+    }
 }
 
 impl StatusType {

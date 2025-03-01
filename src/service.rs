@@ -25,4 +25,11 @@ impl<'a> TodoService<'a> {
             .await
             .map_err(|e| format!("Failed to create todo: {}", e))
     }
+
+    pub async fn list_todos(&self) -> Result<Vec<Todo>, String> {
+        self.repository
+            .list_todos()
+            .await
+            .map_err(|e| format!("Failed to fetch todos: {}", e))
+    }
 }
