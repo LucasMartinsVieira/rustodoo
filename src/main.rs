@@ -78,6 +78,16 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
                 process::exit(1);
             }
         },
+        SubCommand::Complete(args) => match todo_service.complete_todo(args.id).await {
+            Ok(todo) => {
+                println!("Successfully completed todo with ID: {}", todo.id);
+            }
+
+            Err(e) => {
+                eprintln!("Error completing todo: {}", e);
+                process::exit(1);
+            }
+        },
     };
 
     Ok(())

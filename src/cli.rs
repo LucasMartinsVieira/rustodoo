@@ -25,6 +25,9 @@ pub enum SubCommand {
     /// Reset database of todos
     #[command()]
     Reset,
+    /// Completes a todo
+    #[command(alias = "c")]
+    Complete(CompleteArgs),
 }
 
 #[derive(Parser, Debug)]
@@ -42,6 +45,11 @@ pub struct AddArgs {
 
 #[derive(Parser)]
 pub struct RemoveArgs {
+    pub id: i64,
+}
+
+#[derive(Parser)]
+pub struct CompleteArgs {
     pub id: i64,
 }
 
