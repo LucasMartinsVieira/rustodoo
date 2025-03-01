@@ -35,7 +35,7 @@ pub struct AddArgs {
     #[arg(short, long)]
     /// Status of the todo
     pub status: Option<StatusType>,
-    #[arg(short, long, value_parser = parse_due_date)]
+    #[arg(short('D'), long, value_parser = parse_due_date)]
     /// Due date of the todo
     pub due_date: Option<NaiveDate>,
 }
