@@ -14,7 +14,11 @@ pub fn display_table(todos: &[Todo]) {
             Cell::new(&todo.id.to_string()),
             Cell::new(&todo.description),
             Cell::new(format_status(&todo.status)),
-            Cell::new(&todo.due_date.map_or("None".to_string(), |d| d.to_string())),
+            Cell::new(
+                &todo
+                    .due_date
+                    .map_or("Not Registered".to_string(), |d| d.to_string()),
+            ),
         ]));
     }
 

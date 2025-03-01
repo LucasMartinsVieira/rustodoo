@@ -30,8 +30,8 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
                 .create_todo(args.description.as_str(), args.status, args.due_date)
                 .await
             {
-                Ok(todo) => {
-                    println!("Successfully added todo: {:?}", todo);
+                Ok(_) => {
+                    println!("Successfully added todo!");
                 }
                 Err(e) => {
                     eprintln!("Error adding todo: {}", e);
