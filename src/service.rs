@@ -47,7 +47,7 @@ impl<'a> TodoService<'a> {
             .map_err(|e| format!("Failed to remove todo: {}", e))
     }
 
-    pub async fn complete_todo(&self, id: i64) -> Result<Todo, String> {
+    pub async fn complete_todo(&self, id: i64) -> Result<i64, String> {
         self.repository
             .complete_todo(id)
             .await

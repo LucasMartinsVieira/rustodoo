@@ -19,7 +19,7 @@ pub trait TodoRepository {
 
     async fn remove_todo(&self, id: i64) -> sqlx::Result<i64>;
 
-    async fn complete_todo(&self, id: i64) -> sqlx::Result<Todo>;
+    async fn complete_todo(&self, id: i64) -> sqlx::Result<i64>;
 }
 
 pub struct SqliteTodoRepository {
@@ -100,7 +100,7 @@ impl TodoRepository for SqliteTodoRepository {
         Ok(id)
     }
 
-    async fn complete_todo(&self, id: i64) -> sqlx::Result<Todo> {
+    async fn complete_todo(&self, id: i64) -> sqlx::Result<i64> {
         let db_result = query!(
             "UPDATE todos SET status = 2 WHERE id = ? RETURNING id, description, status, due_date",
             id
@@ -108,13 +108,6 @@ impl TodoRepository for SqliteTodoRepository {
         .fetch_one(&self.pool)
         .await?;
 
-        let todo = Todo {
-            id: db_result.id,
-            description: db_result.description,
-            status: StatusType::from_db_value(db_result.status),
-            due_date: naive_date_from_db(db_result.due_date),
-        };
-
-        Ok(todo)
+        Ok(db_result.id)
     }
 }
