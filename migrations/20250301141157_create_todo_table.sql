@@ -2,6 +2,6 @@
 CREATE TABLE IF NOT EXISTS todos (
   id          INTEGER PRIMARY KEY NOT NULL,
   description TEXT    NOT NULL,
-  status      TEXT    CHECK (status in ('pending', 'in_progress', 'done')) DEFAULT 'pending',
+  status      INTEGER DEFAULT 0,    
   due_date    TEXT
 );

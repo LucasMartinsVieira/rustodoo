@@ -1,7 +1,7 @@
 use chrono::NaiveDate;
 use clap::{Parser, Subcommand};
 
-use crate::todo::StatusType;
+use crate::model::StatusType;
 
 /// A simple todo rust application
 #[derive(Parser)]
