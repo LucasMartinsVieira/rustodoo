@@ -30,13 +30,10 @@
         devShell = pkgs.mkShell {
           buildInputs = with pkgs; [
             bacon
-            cargo
             cargo-msrv
             clippy
             nixfmt-rfc-style
-            rust-analyzer
-            rustc
-            rustfmt
+            sqlx-cli
           ];
         };
         packages = {
