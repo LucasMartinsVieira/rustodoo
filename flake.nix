@@ -34,7 +34,6 @@
             cargo-msrv
             clippy
             nixfmt-rfc-style
-            rust-analyzer
             rustc
             sqlx-cli
             openssl

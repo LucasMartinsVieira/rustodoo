@@ -44,8 +44,12 @@ impl Display for StatusType {
 }
 
 impl StatusType {
-    pub fn to_db_value(&self) -> i32 {
-        *self as i32
+    pub fn as_db_value(&self) -> i32 {
+        match &self {
+            StatusType::Pending => 0,
+            StatusType::InProgress => 1,
+            StatusType::Done => 2,
+        }
     }
 
     pub fn from_db_value(value: i64) -> Option<StatusType> {

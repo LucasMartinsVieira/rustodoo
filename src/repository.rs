@@ -34,7 +34,7 @@ impl TodoRepository for SqliteTodoRepository {
         status: Option<StatusType>,
         due_date: Option<NaiveDate>,
     ) -> sqlx::Result<Todo> {
-        let status_value = status.map(|s| s.to_db_value());
+        let status_value = status.map(|s| s.as_db_value());
         let due_date_str = naive_date_to_db(due_date);
 
         let db_result = query!(

@@ -1,13 +1,14 @@
-use std::{env, process};
+use std::process;
 
 use clap::Parser;
 use cli::{Cli, SubCommand};
+use db::Database;
 use repository::SqliteTodoRepository;
 use service::TodoService;
-use sqlx::sqlite::SqlitePoolOptions;
 use utils::display_table;
 
 mod cli;
+mod db;
 mod model;
 mod repository;
 mod service;
@@ -17,12 +18,8 @@ mod utils;
 async fn main() -> Result<(), Box<dyn std::error::Error>> {
     let cli = Cli::parse();
 
-    let database_url =
-        env::var("DATABASE_URL").unwrap_or_else(|_| "sqlite://db/todos.db".to_string());
-    let pool = SqlitePoolOptions::new()
-        .max_connections(5)
-        .connect(&database_url)
-        .await?;
+    let db = Database::new().await?;
+    let pool = db.pool().clone();
 
     let todo_repository = SqliteTodoRepository::new(pool);
     let todo_service = TodoService::new(&todo_repository);
