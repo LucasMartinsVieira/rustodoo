@@ -1,7 +1,7 @@
-use std::str::FromStr;
-
 use chrono::NaiveDate;
 use clap::{Parser, Subcommand};
+
+use crate::todo::StatusType;
 
 /// A simple todo rust application
 #[derive(Parser)]
@@ -37,32 +37,9 @@ pub struct AddArgs {
     pub due_date: Option<NaiveDate>,
 }
 
-impl FromStr for StatusType {
-    type Err = String;
-
-    fn from_str(s: &str) -> Result<Self, Self::Err> {
-        match s.to_lowercase().as_str() {
-            "pending" => Ok(StatusType::Pending),
-            "inprogress" | "in_progress" => Ok(StatusType::InProgress),
-            "done" => Ok(StatusType::Done),
-            _ => Err(format!(
-                "Invalid status: {}. Use 'pending', 'inprogress', or 'done'.",
-                s
-            )),
-        }
-    }
-}
-
 #[derive(Parser)]
 pub struct RemoveArgs {
     pub id: i64,
-}
-
-#[derive(Debug, Clone)]
-pub enum StatusType {
-    Pending,
-    InProgress,
-    Done,
 }
 
 fn parse_due_date(s: &str) -> Result<NaiveDate, chrono::format::ParseError> {
