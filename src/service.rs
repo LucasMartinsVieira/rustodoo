@@ -39,4 +39,11 @@ impl<'a> TodoService<'a> {
             .await
             .map_err(|e| format!("Failed to reset todos: {}", e))
     }
+
+    pub async fn remove_todo(&self, id: i64) -> Result<i64, String> {
+        self.repository
+            .remove_todo(id)
+            .await
+            .map_err(|e| format!("Failed to remove todo: {}", e))
+    }
 }

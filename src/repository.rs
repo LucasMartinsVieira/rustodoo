@@ -16,6 +16,8 @@ pub trait TodoRepository {
     async fn list_todos(&self) -> sqlx::Result<Vec<Todo>>;
 
     async fn reset_todos(&self) -> sqlx::Result<u64>;
+
+    async fn remove_todo(&self, id: i64) -> sqlx::Result<i64>;
 }
 
 pub struct SqliteTodoRepository {
@@ -86,5 +88,13 @@ impl TodoRepository for SqliteTodoRepository {
             .rows_affected();
 
         Ok(rows_affected)
+    }
+
+    async fn remove_todo(&self, id: i64) -> sqlx::Result<i64> {
+        query!("DELETE FROM todos WHERE id = ?", id)
+            .execute(&self.pool)
+            .await?;
+
+        Ok(id)
     }
 }

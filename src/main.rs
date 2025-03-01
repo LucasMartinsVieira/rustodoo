@@ -53,7 +53,16 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
                 process::exit(1);
             }
         },
-        SubCommand::Remove(_args) => todo!(),
+        SubCommand::Remove(args) => match todo_service.remove_todo(args.id).await {
+            Ok(id) => {
+                println!("Successfully removing todo with id: {}", id);
+            }
+
+            Err(e) => {
+                eprintln!("Error removing todo: {}", e);
+                process::exit(1);
+            }
+        },
         SubCommand::Reset => match todo_service.reset_todos().await {
             Ok(todos_deleted) => {
                 if todos_deleted == 0 {
