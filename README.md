@@ -10,7 +10,7 @@ Clone the repository and build the application.
 
 ```bash
 
-git clone https://github.com/LucasMartinsVieira/rustodoo.git
+git clone https://github.com/LucasMartinsVieira/rustodoo
 cd rutodoo
 cargo build --release
 ```
