@@ -1,6 +1,6 @@
 # Rustodoo
 
-rutodoo is a simple command-line to-do application that helps you manage your tasks efficiently. It stores tasks in an SQLite database and provides an intuitive command set for task management.
+Rustodoo is a simple command-line to-do application that helps you manage your tasks efficiently. It stores tasks in an SQLite database and provides an intuitive command set for task management.
 
 ## Installation
 
